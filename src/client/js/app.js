@@ -16,19 +16,6 @@ const url = 'http://localhost:3000/data';
 //https://api.openweathermap.org/data/2.5/weather?lat={lat}&lon={lon}&appid={API key}
 
 
-// Create a new date instance dynamically with JS
-// let d = new Date();
-// let newDate = d.getMonth() + 1 + '.' + d.getDate() + '.' + d.getFullYear();
-const tripDateInput = document.getElementById('tripDate');
-const tripDate = tripDateInput.value;
-
-const currentDate = new Date();
-const selectedDate = new Date(tripDate);
-const timeDifference = selectedDate.getTime() - currentDate.getTime();
-const remainingDays = Math.ceil(timeDifference / (1000 *60* 60 * 24));
-
-const countdownElement = document.getElementById('tripDate');
-countdownElement.textContent = `Your trip is in ${remainingDays} days!`;
 
 //listener for the element with the id: generate, with a callback function to execute when it is clicked.
 document.getElementById('generate').addEventListener('click', performAction);
@@ -75,9 +62,24 @@ console.log("error", error);
 }
 };
 
+// Create a new date instance dynamically with JS
+// let d = new Date();
+// let newDate = d.getMonth() + 1 + '.' + d.getDate() + '.' + d.getFullYear();
+const tripDateInput = document.getElementById('tripDate');
+const tripDate = tripDateInput.value;
+
+const currentDate = new Date();
+const selectedDate = new Date(tripDate);
+const timeDifference = selectedDate.getTime() - currentDate.getTime();
+const remainingDays = Math.ceil(timeDifference / (1000 *60* 60 * 24));
+
+const countdownElement = document.getElementById('tripDate');
+countdownElement.textContent = `Your trip is in ${remainingDays} days!`;
+
+
 const getWeatherBit = async (weatherBitBaseURL,latitude, longitude, apiKey) => {
 // Format the date to YYYY-MM-DD
-const formattedDate = formatDate(date);
+const formattedDate = currentDate.toISOString().split('T')[0]; // Format the date to YYYY-MM-DD
 
 // Construct the URL for the API request
 const forecastWeatherURL = `${weatherBitBaseURL}forecast/daily?lat=${latitude}&lon=${longitude}&key=${apiKey}&start_date=${formattedDate}&end_date=${formattedDate}`;
