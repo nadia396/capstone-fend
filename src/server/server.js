@@ -1,5 +1,6 @@
 // let apiKey = 'aa5dcd0cd2b36055f1ac56f5b3735a76&units=imperial';
-let apiKey = 'nadiasheikh396';
+let geoapiKey = 'nadiasheikh396';
+let weatherBitAPIKey = 'bcdf37b0236148beaf77a198ee3e7137';
 
 
 // Setup empty JS object to act as endpoint for all routes
@@ -22,6 +23,11 @@ const fetch = require('node-fetch');
 const app = express();
 app.use(cors());
 
+var jsonParser = bodyParser.json()
+
+var urlencodedParser = bodyParser.urlencoded({ extended: false })
+
+
 /*Dependencies*/
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
@@ -35,71 +41,87 @@ const port = 3000;
 
 const server = app.listen(port, listening);
 function listening() {
-    // console.log(server);
-    console.log(`running on localhost: ${port}`);
+// console.log(server);
+console.log(`running on localhost: ${port}`);
 };
 
 
 // app.get('/weather', async (req, res) => {
-//     try {
-//       const response = await axios.get('http://api.geonames.org/searchJSON', {
-//         params: {
-//           zip: req.query.zip,
-//           appid: 'apiKey',
-//           units: 'imperial'
-//         }
-//       });
-      
-//       res.json(response.data);
-//     } catch (error) {
-//       res.status(500).json({ error: 'Failed to fetch weather data' });
-//     }
-//   });
+// try {
+// const response = await axios.get('http://api.geonames.org/searchJSON', {
+// params: {
+// zip: req.query.zip,
+// appid: 'apiKey',
+// units: 'imperial'
+// }
+// });
+
+// res.json(response.data);
+// } catch (error) {
+// res.status(500).json({ error: 'Failed to fetch weather data' });
+// }
+// });
 
 app.get('/geo', async (req, res) => {
-  try {
-    const response = await axios.get('http://api.geonames.org/searchJSON', {
-      params: {
-        q: req.query.city,
-        maxRows: 1,
-        username: apiKey
-      }
-    });
-
-    res.json(response.data);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch weather data' });
-  }
+try {
+const response = await axios.get('http://api.geonames.org/searchJSON', {
+params: {
+q: req.query.city,
+maxRows: 1,
+username: geoapiKey
+}
 });
 
+res.json(response.data);
+} catch (error) {
+res.status(500).json({ error: 'Failed to fetch geonames data' });
+}
+});
 
+app.get('/weather', async(req, res) => {
+try {
+const response = await axios.get('https://api.weatherbit.io/v2.0/', {
+params:{
+latitude: req.query.latitude,
+longitude: req.query.longitude,
+apiKey: weatherBitAPIKey
+}
+});
 
-//Add GET route that returns the projectData object 
+res.json(response.data);
+} catch (error) {
+res.status(500).json({ error: 'Failed to fetch weather data' });
+}
+});
+
+//Add GET route that returns the projectData object
 app.get('/data', sendData);
 
 function sendData(request, response) {
-    response.send(projectData);
+response.send(projectData);
 };
 
 //Add a POST route that adds incoming data to projectData
 app.post('/data', addData);
 
 function addData(request, response) {
-    projectData = {
-        latitude: request.body.latitude,
-        longitude: request.body.longitude,
-        country: request.body.country
-    };
-    //response.send('{\r\n\t\"response\": \"Data added successfully!\"\r\n}');
-    response.json({ response: "Data added successfully!" });
+projectData = {
+latitude: request.body.latitude,
+longitude: request.body.longitude,
+country: request.body.country,
+temperature: request.body.temperature,
+description: request.body.description
+};
+//response.send('{\r\n\t\"response\": \"Data added successfully!\"\r\n}');
+response.json({ response: "Data added successfully!" });
 };
 
 // Error handling middleware
 app.use((req, res, next) => {
-    res.status(404).send('404: Page not found');
-  });
-  
-  app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('500: Internal Server Error');
-  });
+res.status(404).send('404: Page not found');
+});
+
+app.use((err, req, res, next) => {
+console.error(err.stack);
+res.status(500).send('500: Internal Server Error');
+}); 

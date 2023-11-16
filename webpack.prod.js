@@ -9,9 +9,12 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
-  devServer: {
-    port: 3002,
-  },
+  // devServer: {
+    // contentBase: './dist',
+    // open: true,
+    // hot: true,
+  //   port: 3002,
+  // },
   plugins: [
     new HtmlWebPackPlugin({
       template: "./src/client/views/index.html",
