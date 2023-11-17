@@ -112,6 +112,7 @@ country: request.body.country,
 temperature: request.body.temperature,
 description: request.body.description
 };
+console.log(projectData);
 //response.send('{\r\n\t\"response\": \"Data added successfully!\"\r\n}');
 response.json({ response: "Data added successfully!" });
 };
