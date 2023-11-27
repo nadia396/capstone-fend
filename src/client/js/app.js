@@ -154,7 +154,7 @@ const updateUI = async () => {
 
 	
 		// Create an <img> element and set its src attribute to the retrieved image URL
-		const imageElement = document.createElement('img');
+		const imageElement = document.getElementById('imagage');
 		imageElement.src = allData.imageURL;
 	
 		// Append the image element to the 'image' element in the HTML
@@ -185,15 +185,6 @@ function performAction(e) {
 			resultsData["latitude"] = geonamesData.latitude;
 			resultsData["longitude"] = geonamesData.longitude;
 			resultsData["country"] = geonamesData.country;
-			
-
-			// postData('/data', {
-			// 	latitude: geonamesData.latitude,
-			// 	longitude: geonamesData.longitude,
-			// 	country: geonamesData.country,
-
-			// });
-			// console.log(geonamesData);
 
 			return geonamesData; // Return geonamesData to the next .then() block
 		})
@@ -205,15 +196,27 @@ function performAction(e) {
 		.then(weatherbitData => {
 			resultsData["temperature"] = weatherbitData.temperature;
 			resultsData["description"] = weatherbitData.description;
-			console.log("printing results data");
-			console.log(resultsData);
+			
 			return getPix(pixBaseURL, newCity, maxRows, pixApiKey);
 		  })
 		.then(imageURL => {
+			resultsData["imageURL"] = imageURL;
+			
 			// Do something with the imageURL, such as displaying the image on the UI
 			console.log('Image URL:', imageURL);
+			console.log("printing results data");
+			console.log(resultsData);
+			postData('/data', {
+				latitude: resultsData.latitude,
+				longitude: resultsData.longitude,
+				country: resultsData.country,
+				temperature: resultsData.temperature,
+				description: resultsData.description,
+				imageURL: resultsData.imageURL
+			});
 		  })
 		.then(updateUI)
+			
 		.catch(error => {
 			console.log("error", error);
 		});
