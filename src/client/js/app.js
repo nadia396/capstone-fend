@@ -178,24 +178,35 @@ function performAction(e) {
 	attachEventListeners();
 
 	const newCity = document.getElementById('city').value;
+	let resultsData = {};
 
 	getGeonames(geoBaseURL, newCity, geoapiKey)
 		.then(geonamesData => {
-			postData('/data', {
-				latitude: geonamesData.latitude,
-				longitude: geonamesData.longitude,
-				country: geonamesData.country,
+			resultsData["latitude"] = geonamesData.latitude;
+			resultsData["longitude"] = geonamesData.longitude;
+			resultsData["country"] = geonamesData.country;
+			
 
-			});
-			console.log(geonamesData);
+			// postData('/data', {
+			// 	latitude: geonamesData.latitude,
+			// 	longitude: geonamesData.longitude,
+			// 	country: geonamesData.country,
+
+			// });
+			// console.log(geonamesData);
 
 			return geonamesData; // Return geonamesData to the next .then() block
 		})
 		.then(geonamesData => {
 			// Call getWeatherBit function with the required parameters
 			return getWeatherBit(weatherBitBaseURL, geonamesData.latitude, geonamesData.longitude, weatherBitAPIKey);
+			
 		})
-		.then(() => {
+		.then(weatherbitData => {
+			resultsData["temperature"] = weatherbitData.temperature;
+			resultsData["description"] = weatherbitData.description;
+			console.log("printing results data");
+			console.log(resultsData);
 			return getPix(pixBaseURL, newCity, maxRows, pixApiKey);
 		  })
 		.then(imageURL => {
