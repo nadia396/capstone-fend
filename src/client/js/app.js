@@ -43,16 +43,11 @@ const getGeonames = async (geoBaseURL, city, key) => {
 };
 
 // Create a new date instance dynamically with JS
-const tripDateInput = document.getElementById('tripDate');
-const tripDate = tripDateInput.value;
+// const tripDateInput = document.getElementById('tripDate');
+// const tripDate = tripDateInput.value;
 
-const currentDate = new Date();
-const selectedDate = new Date(tripDate);
-const timeDifference = selectedDate.getTime() - currentDate.getTime();
-const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
 
-const countdownElement = document.getElementById('tripDate');
-countdownElement.textContent = `Your trip is in ${remainingDays} days!`;
+// const selectedDate = new Date(tripDate);
 
 
 const getWeatherBit = async (weatherBitBaseURL, latitude, longitude, apiKey) => {
@@ -61,6 +56,7 @@ const getWeatherBit = async (weatherBitBaseURL, latitude, longitude, apiKey) => 
 // 	const response = await fetch(weatherApiUrl);
   
     // Format the date to YYYY-MM-DD
+	const currentDate = new Date();
 	const formattedDate = currentDate.toISOString().split('T')[0]; // Format the date to YYYY-MM-DD
 
 	// Construct the URL for the API request
@@ -146,21 +142,24 @@ const updateUI = async () => {
 		const allData = await request.json();
 		console.log("NADAI");
 		console.log(allData);
-		document.getElementById('latitude').innerHTML = allData.latitude;
-		document.getElementById('longitude').innerHTML = allData.longitude;
-		document.getElementById('country').innerHTML = allData.country;
-		document.getElementById('temperature').innerHTML = allData.temperature;
-		document.getElementById('description').innerHTML = allData.description;
+		// const timeDifference = selectedDate.getTime() - currentDate.getTime();
+		// const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
+
+		// const countdownElement = document.getElementById('remainingDays');
+		// countdownElement.textContent = `Your trip is in ${remainingDays} days!`;
+
+		document.getElementById('latitude').innerHTML = "Latitude: " + allData.latitude;
+		document.getElementById('longitude').innerHTML = "Longitude: " + allData.longitude;
+		document.getElementById('country').innerHTML = "Country: " + allData.country;
+		document.getElementById('temperature').innerHTML = "Celsius Temperature: " + allData.temperature;
+		document.getElementById('description').innerHTML = "Weather Description: " + allData.description;
+		document.getElementById('image').innerHTML = "City Image: " + allData.imageURL;
 
 	
-		// Create an <img> element and set its src attribute to the retrieved image URL
-		const imageElement = document.getElementById('imagage');
-		imageElement.src = allData.imageURL;
-	
-		// Append the image element to the 'image' element in the HTML
-		const imageContainer = document.getElementById('image');
-		imageContainer.innerHTML = '';
-		imageContainer.appendChild(imageElement);
+		
+		
+		// const imageElement = document.getElementById('image');
+		// imageElement.src = allData.imageURL;
 	
 	} catch (error) {
 		console.log("error", error);
@@ -206,6 +205,8 @@ function performAction(e) {
 			console.log('Image URL:', imageURL);
 			console.log("printing results data");
 			console.log(resultsData);
+			const imageElement = document.getElementById('image');
+			imageElement.src = imageURL;
 			postData('/data', {
 				latitude: resultsData.latitude,
 				longitude: resultsData.longitude,
@@ -215,7 +216,22 @@ function performAction(e) {
 				imageURL: resultsData.imageURL
 			});
 		  })
-		.then(updateUI)
+		// .then(updateUI)
+		.then(() => {
+			// Calculate remaining days and update UI
+			const tripDateInput = document.getElementById('tripDate');
+			const tripDate = tripDateInput.value;
+
+			const currentDate = new Date();
+			const selectedDate = new Date(tripDate);
+			const timeDifference = selectedDate.getTime() - currentDate.getTime();
+			const remainingDays = Math.ceil(timeDifference / (1000  *60*  60 * 24));
+
+			const countdownElement = document.getElementById('remainingDays');
+			countdownElement.textContent = `Your trip is in ${remainingDays} days!`;
+			
+			updateUI();
+		})
 			
 		.catch(error => {
 			console.log("error", error);
