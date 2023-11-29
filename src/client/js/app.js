@@ -1,4 +1,16 @@
 //app.js
+if ('serviceWorker' in navigator) {
+	window.addEventListener('load', () => {
+	  navigator.serviceWorker.register('service-worker.js')
+		.then(registration => {
+		  console.log('Service Worker registered:', registration);
+		})
+		.catch(error => {
+		  console.log('Service Worker registration failed:', error);
+		});
+	});
+  }
+  
 //import { attachEventListeners } from './eventListener.js';
 
 /* Global Variables */
@@ -7,7 +19,7 @@ let weatherBitAPIKey = 'bcdf37b0236148beaf77a198ee3e7137';
 let pixApiKey = '40738165-7810322547d1838e4eb2bf383';
 
 // Base URL for the OpenWeatherMap API
-//let baseURL = 'https://api.openweathermap.org/data/2.5/weather';
+
 let geoBaseURL = 'http://api.geonames.org/searchJSON';
 let weatherBitBaseURL = 'https://api.weatherbit.io/v2.0/';
 let pixBaseURL = 'https://pixabay.com/api/';
@@ -18,7 +30,7 @@ let maxRows = 1;
 
 //listener for the element with the id: generate, with a callback function to execute when it is clicked.
 document.getElementById('generate').addEventListener('click', performAction);
-//attachEventListeners();
+
 
 
 const getGeonames = async (geoBaseURL, city, key) => {
@@ -42,19 +54,9 @@ const getGeonames = async (geoBaseURL, city, key) => {
 	}
 };
 
-// Create a new date instance dynamically with JS
-// const tripDateInput = document.getElementById('tripDate');
-// const tripDate = tripDateInput.value;
-
-
-// const selectedDate = new Date(tripDate);
-
 
 const getWeatherBit = async (weatherBitBaseURL, latitude, longitude, apiKey) => {
-// const getWeatherBit = async (geoData) => {
-// 	const weatherApiUrl = `http://localhost:3000/weather?lat=${geoData.lat}&lon=${geoData.lon}`;
-// 	const response = await fetch(weatherApiUrl);
-  
+
     // Format the date to YYYY-MM-DD
 	const currentDate = new Date();
 	const formattedDate = currentDate.toISOString().split('T')[0]; // Format the date to YYYY-MM-DD
@@ -114,8 +116,7 @@ const formatDate = (date) => {
 };
 
 const postData = async (url = '', data = {}) => {
-	// console.log(data);
-	// console.log(url);
+
 	const response = await fetch("http://localhost:3000/data", {
 		method: 'POST',
 		credentials: 'same-origin',
@@ -142,12 +143,7 @@ const updateUI = async () => {
 		const allData = await request.json();
 		console.log("NADAI");
 		console.log(allData);
-		// const timeDifference = selectedDate.getTime() - currentDate.getTime();
-		// const remainingDays = Math.ceil(timeDifference / (1000 * 60 * 60 * 24));
-
-		// const countdownElement = document.getElementById('remainingDays');
-		// countdownElement.textContent = `Your trip is in ${remainingDays} days!`;
-
+	
 		document.getElementById('latitude').innerHTML = "Latitude: " + allData.latitude;
 		document.getElementById('longitude').innerHTML = "Longitude: " + allData.longitude;
 		document.getElementById('country').innerHTML = "Country: " + allData.country;
@@ -155,11 +151,6 @@ const updateUI = async () => {
 		document.getElementById('description').innerHTML = "Weather Description: " + allData.description;
 		document.getElementById('image').innerHTML = "City Image: " + allData.imageURL;
 
-	
-		
-		
-		// const imageElement = document.getElementById('image');
-		// imageElement.src = allData.imageURL;
 	
 	} catch (error) {
 		console.log("error", error);
