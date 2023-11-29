@@ -4,7 +4,7 @@ self.addEventListener('install', event => {
         return cache.addAll([
           '/',
           '/index.html',
-          '/app.js',
+          '/bundle.js',
           // Add other files and assets you want to cache
         ]);
       })

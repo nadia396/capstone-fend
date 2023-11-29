@@ -23,8 +23,7 @@
     "terser-webpack-plugin": "^5.1.1",
     "webpack": "^4.35.3",
     "webpack-cli": "^3.3.5",
-    "webpack-dev-server": "^3.7.2",
-    "workbox-webpack-plugin": "^6.6.5"
+    "webpack-dev-server": "^3.7.2"
   },
   "dependencies": {
     "axios": "^1.6.2",

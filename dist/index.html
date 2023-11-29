@@ -1,0 +1,45 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <title>Travel App</title>
+  <!-- <link href="https://fonts.googleapis.com/css?family=Oswald:400,600,700|Ranga:400,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../src/client/styles/style.scss"> -->
+</head>
+
+<body>
+  <div id="app">
+    <div class="holder headline">
+     Travel App
+    </div>
+    <div class="holder city">
+      <label for="city">Enter City here</label>
+      <input type="text" id="city" placeholder="enter city here">
+    </div>
+
+    <div class="holder date">
+      <label for="tripDate">Enter Trip Date here</label>
+      <input type="date" id="tripDate" />
+    </div>
+
+    <button id="generate" type="submit"> Generate </button>
+
+    <div class="holder entry">
+      <div class="title">Geonames & WeatherBit Recent Entry</div>
+      <div id="latitude"> </div>
+      <div id="longitude"></div>
+      <div id="country"></div>
+      <div id="temperature"></div>
+      <div id="description"></div>
+      <div id="remainingDays"></div>
+      <img id="image" src="" alt="City Image">
+
+    </div>
+  </div>
+  <!-- <script src="../src/client/js/app.js" type="application/javascript"></script> -->
+  
+<script type="text/javascript" src="bundle.js"></script><script type="text/javascript" src="service-worker.js"></script></body>
+
+</html>

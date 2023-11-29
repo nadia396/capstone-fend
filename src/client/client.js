@@ -5,6 +5,8 @@ import './js/app.js';
 
 import './styles/style.scss';
 
+import './js/service-worker.js';
+
 
 alert ("client.js exists");
 

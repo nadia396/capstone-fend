@@ -3,10 +3,14 @@ const webpack = require("webpack");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  entry: './src/client/client.js',
+  entry: {
+    'bundle' : './src/client/client.js',
+    'service-worker' : './src/client/js/service-worker.js'
+  },
   mode: 'development',
   output: {
-    filename: 'bundle.js',
+    filename: "[name].js",
+    // filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
 
