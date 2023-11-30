@@ -29,8 +29,11 @@ let maxRows = 1;
 
 
 //listener for the element with the id: generate, with a callback function to execute when it is clicked.
-document.getElementById('generate').addEventListener('click', performAction);
-
+//document.getElementById('generate').addEventListener('click', performAction);
+var gen = document.getElementById('generate');
+if (gen) {
+	gen.addEventListener('click', performAction)
+}
 
 
 const getGeonames = async (geoBaseURL, city, key) => {
